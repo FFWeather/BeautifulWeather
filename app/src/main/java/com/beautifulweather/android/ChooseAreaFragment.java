@@ -3,6 +3,7 @@ package com.beautifulweather.android;
 import android.app.Application;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.app.WallpaperInfo;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -85,14 +86,17 @@ public class ChooseAreaFragment extends Fragment {
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
                     String weatherId = countyList.get(position).getWeatherId();
-                    SharedPreferences.Editor editor = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity()).edit();
-                    editor.remove("weather");
-                    editor.apply();
-                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                    intent.putExtra("weather_id", weatherId);
-                    startActivity(intent);
-                    getActivity().finish();
+                    if (getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    } else {
+                        WeatherActivity weatherActivity = (WeatherActivity)getActivity();
+                        weatherActivity.drawerLayout.closeDrawers();
+                        weatherActivity.swipeRefresh.setRefreshing(true);
+                        weatherActivity.requestWeather(weatherId);
+                    }
                 }
             }
         });
@@ -162,7 +166,6 @@ public class ChooseAreaFragment extends Fragment {
         } else {
             String address = "http://guolin.tech/api/china/" + selectedProvince.getProvinceCode()
                     + "/" + selectedCity.getCityCode();
-
             queryFromServer(address, LEVEL_COUNTY);
         }
     }

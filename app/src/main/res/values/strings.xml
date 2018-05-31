@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">BeautifulWeather</string>
+    <string name="app_name">美丽天气</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="heweatherkey">1528354b870d4e49b277d2178f0bbc39</string>
+    <string name="he_weather_key">1528354b870d4e49b277d2178f0bbc39</string>
 </resources>
